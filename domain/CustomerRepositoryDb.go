@@ -3,7 +3,7 @@ package domain
 import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
-	"log"
+	"github.com/wilker/banking/errs"
 	"time"
 )
 
@@ -11,13 +11,21 @@ type CustomerRepositoryDb struct {
 	client *sql.DB
 }
 
-func (d CustomerRepositoryDb) FindAll() ([]Customer, error) {
+func (d CustomerRepositoryDb) FindAll(status string) ([]Customer, *errs.AppError) {
 
-	findAllSQL := "select customer_id, name, city, zipcode, date_of_birth, status from banking.customers"
-	rows, err := d.client.Query(findAllSQL)
+	var rows *sql.Rows
+	var err error
+
+	if status == "" {
+		findAllSQL := `select customer_id, name, city, zipcode, date_of_birth, status from banking.customers`
+		rows, err = d.client.Query(findAllSQL)
+	} else {
+		findAllSQL := `select customer_id, name, city, zipcode, date_of_birth, status from banking.customers where status = ?`
+		rows, err = d.client.Query(findAllSQL, status)
+	}
+
 	if err != nil {
-		log.Println("Error while querying table " + err.Error())
-		return nil, err
+		return nil, errs.NewUnexpectedError("unexpected database error")
 	}
 
 	customers := make([]Customer, 0)
@@ -25,12 +33,29 @@ func (d CustomerRepositoryDb) FindAll() ([]Customer, error) {
 		var c Customer
 		err := rows.Scan(&c.Id, &c.Name, &c.City, &c.Zipcode, &c.DateOfBirth, &c.Status)
 		if err != nil {
-			log.Println("Error while scanning customers " + err.Error())
-			return nil, err
+			return nil, errs.NewUnexpectedError("unexpected database error")
 		}
 		customers = append(customers, c)
 	}
 	return customers, nil
+}
+
+func (d CustomerRepositoryDb) ById(id string) (*Customer, *errs.AppError) {
+	customerSql := `select customer_id, name, city, zipcode, date_of_birth, status 
+					from banking.customers 
+					where customer_id = ?`
+
+	row := d.client.QueryRow(customerSql, id)
+	var c Customer
+	err := row.Scan(&c.Id, &c.Name, &c.City, &c.Zipcode, &c.DateOfBirth, &c.Status)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, errs.NewNotFoundError("customer not found")
+		} else {
+			return nil, errs.NewUnexpectedError("unexpected database error")
+		}
+	}
+	return &c, nil
 }
 
 func NewCustomerRepositoryDb() CustomerRepositoryDb {
