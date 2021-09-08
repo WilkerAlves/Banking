@@ -3,7 +3,7 @@ package app
 import (
 	"encoding/json"
 	"encoding/xml"
-	"fmt"
+	"github.com/wilker/banking/service"
 	"net/http"
 )
 
@@ -13,15 +13,12 @@ type Customer struct {
 	Zipcode string `json:"zipcode" xml:"zipcode"`
 }
 
-func greet(writer http.ResponseWriter, request *http.Request) {
-	fmt.Fprint(writer, "Hello world!!")
+type CustomerHandlers struct {
+	service service.CustomerService
 }
 
-func getAllCustomers(w http.ResponseWriter, r *http.Request) {
-	customers := []Customer{
-		{"Ashish", "New Delhi", "110075"},
-		{"Rob", "New Delhi", "110075"},
-	}
+func (ch *CustomerHandlers) getAllCustomers(w http.ResponseWriter, r *http.Request) {
+	customers, _ := ch.service.GetAllCustomer()
 
 	if r.Header.Get("Content-Type") == "application/xml" {
 		w.Header().Add("Content-Type", "application/xml")
@@ -37,4 +34,3 @@ func getAllCustomers(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
-

@@ -1,4 +1,4 @@
-package exercise
+package resources
 
 import (
 	"encoding/json"
