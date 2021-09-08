@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/wilker/banking/errs"
+	"github.com/wilker/banking/logger"
 	"time"
 )
 
@@ -25,6 +26,7 @@ func (d CustomerRepositoryDb) FindAll(status string) ([]Customer, *errs.AppError
 	}
 
 	if err != nil {
+		logger.Error("Error while querying customers table " + err.Error())
 		return nil, errs.NewUnexpectedError("unexpected database error")
 	}
 
@@ -33,6 +35,7 @@ func (d CustomerRepositoryDb) FindAll(status string) ([]Customer, *errs.AppError
 		var c Customer
 		err := rows.Scan(&c.Id, &c.Name, &c.City, &c.Zipcode, &c.DateOfBirth, &c.Status)
 		if err != nil {
+			logger.Error("Error while scanning customers " + err.Error())
 			return nil, errs.NewUnexpectedError("unexpected database error")
 		}
 		customers = append(customers, c)
@@ -52,6 +55,7 @@ func (d CustomerRepositoryDb) ById(id string) (*Customer, *errs.AppError) {
 		if err == sql.ErrNoRows {
 			return nil, errs.NewNotFoundError("customer not found")
 		} else {
+			logger.Error("Error while scanning customer " + err.Error())
 			return nil, errs.NewUnexpectedError("unexpected database error")
 		}
 	}
@@ -59,7 +63,7 @@ func (d CustomerRepositoryDb) ById(id string) (*Customer, *errs.AppError) {
 }
 
 func NewCustomerRepositoryDb() CustomerRepositoryDb {
-	client, err := sql.Open("mysql", "root:4874021993@tcp(localhost:3306)/banking")
+	client, err := sql.Open("mysql", "root:874021993@tcp(localhost:3306)/banking")
 	if err != nil {
 		panic(err)
 	}
