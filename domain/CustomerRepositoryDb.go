@@ -52,7 +52,7 @@ func (d CustomerRepositoryDb) ById(id string) (*Customer, *errs.AppError) {
 }
 
 func NewCustomerRepositoryDb() CustomerRepositoryDb {
-	client, err := sqlx.Open("mysql", "root:4874021993@tcp(localhost:3306)/banking")
+	client, err := sqlx.Open("mysql", "root:123456@tcp(localhost:3306)/banking")
 	if err != nil {
 		panic(err)
 	}
