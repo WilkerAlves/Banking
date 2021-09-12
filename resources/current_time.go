@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func main() {
+func _() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/api/time", func(w http.ResponseWriter, r *http.Request) {

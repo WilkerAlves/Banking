@@ -1,7 +1,7 @@
 package dto
 
 import (
-	"github.com/wilker/banking/errs"
+	"github.com/WilkerAlves/banking-lib/errs"
 	"strings"
 )
 

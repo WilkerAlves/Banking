@@ -1,9 +1,9 @@
 package service
 
 import (
+	"github.com/WilkerAlves/banking-lib/errs"
 	"github.com/wilker/banking/domain"
 	"github.com/wilker/banking/dto"
-	"github.com/wilker/banking/errs"
 )
 
 type CustomerService interface {
