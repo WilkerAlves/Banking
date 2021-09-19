@@ -17,6 +17,20 @@ func sanityCheck() {
 	if err := godotenv.Load(); err != nil {
 		log.Fatal("Environment variable not defined")
 	}
+	envProps := []string{
+		"SERVER_ADDRESS",
+		"SERVER_PORT",
+		"DB_USER",
+		"DB_PASSWD",
+		"DB_ADDR",
+		"DB_PORT",
+		"DB_NAME",
+	}
+	for _, k := range envProps {
+		if os.Getenv(k) == "" {
+			log.Println(fmt.Sprintf("Environment variable %s not defined. Terminating application...", k))
+		}
+	}
 }
 
 func Start() {
