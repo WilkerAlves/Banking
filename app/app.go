@@ -2,15 +2,16 @@ package app
 
 import (
 	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"time"
+
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	"github.com/wilker/banking/domain"
 	"github.com/wilker/banking/service"
-	"log"
-	"net/http"
-	"os"
-	"time"
 )
 
 func sanityCheck() {
@@ -25,6 +26,10 @@ func sanityCheck() {
 		"DB_ADDR",
 		"DB_PORT",
 		"DB_NAME",
+		"AUTH_SERVER_ADDRESS",
+		"AUTH_SERVER_PORT",
+		"AUTH_PATH",
+		"AUTH_SCHEME",
 	}
 	for _, k := range envProps {
 		if os.Getenv(k) == "" {
@@ -37,21 +42,31 @@ func Start() {
 	sanityCheck()
 
 	router := mux.NewRouter()
+	am := AuthMiddleware{domain.NewAuthRepository()}
+	router.Use(am.authorizationHandler())
 
 	dbClient := getDbClient()
 	customerRepositoryDB := domain.NewCustomerRepositoryDb(dbClient)
 	accountRepositoryDB := domain.NewAccountRepositoryDb(dbClient)
 
 	// wiring
-	//ch := CustomerHandlers{service: service.NewCustomerService(domain.NewCustomerRepositoryStub())}
+	// ch := CustomerHandlers{service: service.NewCustomerService(domain.NewCustomerRepositoryStub())}
 	ch := CustomerHandlers{service: service.NewCustomerService(customerRepositoryDB)}
 	ah := AccountHandler{service: service.NewAccountService(accountRepositoryDB)}
 
 	// define routes
-	router.HandleFunc("/customers", ch.getAllCustomers).Methods(http.MethodGet)
-	router.HandleFunc("/customers/{customer_id:[0-9]+}", ch.getCustomer).Methods(http.MethodGet)
-	router.HandleFunc("/customers/{customer_id:[0-9]+}/account", ah.NewAccount).Methods(http.MethodPost)
-	router.HandleFunc("/customers/{customer_id:[0-9]+}/account/{account_id:[0-9]+}", ah.MakeTransaction).Methods(http.MethodPost)
+	router.HandleFunc("/customers", ch.getAllCustomers).
+		Methods(http.MethodGet).
+		Name("GetAllCustomers")
+	router.HandleFunc("/customers/{customer_id:[0-9]+}", ch.getCustomer).
+		Methods(http.MethodGet).
+		Name("GetCustomer")
+	router.HandleFunc("/customers/{customer_id:[0-9]+}/account", ah.NewAccount).
+		Methods(http.MethodPost).
+		Name("NewAccount")
+	router.HandleFunc("/customers/{customer_id:[0-9]+}/account/{account_id:[0-9]+}", ah.MakeTransaction).
+		Methods(http.MethodPost).
+		Name("NewTransaction")
 
 	// starting server
 	address := os.Getenv("SERVER_ADDRESS")
