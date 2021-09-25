@@ -6,6 +6,8 @@ import (
 	"github.com/wilker/banking/dto"
 )
 
+//go:generate mockgen -destination=../mocks/service/mockCustomerService.go -package=service github.com/wilker/banking/service CustomerService
+
 type CustomerService interface {
 	GetAllCustomer(string) ([]dto.CustomerResponse, *errs.AppError)
 	GetCustomer(string) (*dto.CustomerResponse, *errs.AppError)
