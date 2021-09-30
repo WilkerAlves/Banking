@@ -1,6 +1,10 @@
 package domain
 
-import "github.com/wilker/banking/dto"
+import (
+	"time"
+
+	"github.com/wilker/banking/dto"
+)
 
 const WITHDRAWAL = "withdrawal"
 
@@ -23,5 +27,14 @@ func (t Transaction) ToDto() dto.TransactionResponse {
 		Amount:          t.Amount,
 		TransactionType: t.TransactionType,
 		TransactionDate: t.TransactionDate,
+	}
+}
+
+func NewTransaction(accountId, transactionType string, amount float64) Transaction {
+	return Transaction{
+		AccountId:       accountId,
+		Amount:          amount,
+		TransactionType: transactionType,
+		TransactionDate: time.Now().Format(dbTSLayout),
 	}
 }
