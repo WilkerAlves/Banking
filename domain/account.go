@@ -2,7 +2,7 @@ package domain
 
 import (
 	"github.com/WilkerAlves/banking-lib/errs"
-	"github.com/wilker/banking/dto"
+	"github.com/WilkerAlves/banking/dto"
 )
 
 const dbTSLayout = "2006-01-02 15:04:05"
@@ -16,7 +16,7 @@ type Account struct {
 	Status      string  `db:"status"`
 }
 
-//go:generate mockgen -destination=../mocks/domain/mockAccountRepository.go -package=domain github.com/wilker/banking/domain AccountRepository
+//go:generate mockgen -destination=../mocks/domain/mockAccountRepository.go -package=domain github.com/WilkerAlves/banking/domain AccountRepository
 type AccountRepository interface {
 	Save(account Account) (*Account, *errs.AppError)
 	FindBy(accountId string) (*Account, *errs.AppError)

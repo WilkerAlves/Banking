@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/WilkerAlves/banking/service"
 	"github.com/gorilla/mux"
-	"github.com/wilker/banking/service"
 )
 
 type CustomerHandlers struct {

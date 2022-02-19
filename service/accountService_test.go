@@ -2,13 +2,13 @@ package service
 
 import (
 	"github.com/WilkerAlves/banking-lib/errs"
-	realdomain "github.com/wilker/banking/domain"
-	"github.com/wilker/banking/dto"
+	realdomain "github.com/WilkerAlves/banking/domain"
+	"github.com/WilkerAlves/banking/dto"
 
 	"testing"
 
+	"github.com/WilkerAlves/banking/mocks/domain"
 	"github.com/golang/mock/gomock"
-	"github.com/wilker/banking/mocks/domain"
 )
 
 var mockRepo *domain.MockAccountRepository

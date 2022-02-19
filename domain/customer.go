@@ -2,7 +2,7 @@ package domain
 
 import (
 	"github.com/WilkerAlves/banking-lib/errs"
-	"github.com/wilker/banking/dto"
+	"github.com/WilkerAlves/banking/dto"
 )
 
 type Customer struct {

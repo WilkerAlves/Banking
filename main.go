@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/WilkerAlves/banking-lib/logger"
-	"github.com/wilker/banking/app"
+	"github.com/WilkerAlves/banking/app"
 )
 
 func main() {

@@ -7,10 +7,10 @@ import (
 	"testing"
 
 	"github.com/WilkerAlves/banking-lib/errs"
+	"github.com/WilkerAlves/banking/dto"
+	"github.com/WilkerAlves/banking/mocks/service"
 	"github.com/golang/mock/gomock"
 	"github.com/gorilla/mux"
-	"github.com/wilker/banking/dto"
-	"github.com/wilker/banking/mocks/service"
 )
 
 var router *mux.Router

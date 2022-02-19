@@ -3,7 +3,7 @@ package domain
 import (
 	"time"
 
-	"github.com/wilker/banking/dto"
+	"github.com/WilkerAlves/banking/dto"
 )
 
 const WITHDRAWAL = "withdrawal"

@@ -2,8 +2,8 @@ package service
 
 import (
 	"github.com/WilkerAlves/banking-lib/errs"
-	"github.com/wilker/banking/domain"
-	"github.com/wilker/banking/dto"
+	"github.com/WilkerAlves/banking/domain"
+	"github.com/WilkerAlves/banking/dto"
 )
 
 type AccountService interface {

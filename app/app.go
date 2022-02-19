@@ -7,11 +7,11 @@ import (
 	"os"
 	"time"
 
+	"github.com/WilkerAlves/banking/domain"
+	"github.com/WilkerAlves/banking/service"
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
-	"github.com/wilker/banking/domain"
-	"github.com/wilker/banking/service"
 )
 
 func sanityCheck() {

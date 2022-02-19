@@ -2,10 +2,11 @@ package app
 
 import (
 	"encoding/json"
-	"github.com/gorilla/mux"
-	"github.com/wilker/banking/dto"
-	"github.com/wilker/banking/service"
 	"net/http"
+
+	"github.com/WilkerAlves/banking/dto"
+	"github.com/WilkerAlves/banking/service"
+	"github.com/gorilla/mux"
 )
 
 type AccountHandler struct {
